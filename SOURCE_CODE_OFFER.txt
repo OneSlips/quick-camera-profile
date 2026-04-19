@@ -2,11 +2,17 @@ SOURCE CODE NOTICE - QUICK CAMERA PROFILE (QCP)
 
 This product includes software licensed under GNU GPL v3.0.
 
+Created by: Roman Alurkoff
+Distributed by: TactileBridge - Photography Software Solutions and Integration
+Distributor website: https://tactilebridge.com
+
 You can obtain the complete corresponding source code for this exact release at:
-https://github.com/OneSlips/quick-camera-profile/archive/refs/tags/v1.0.1.zip
+https://github.com/OneSlips/quick-camera-profile/archive/refs/tags/v1.0.2.zip
 
 Project repository:
 https://github.com/OneSlips/quick-camera-profile
 
 If you distribute this binary, you must preserve this notice and provide
 corresponding source code access for recipients under GPLv3 terms.
+
+

@@ -2,18 +2,20 @@
 ; Build with: iscc installer\\QuickCameraProfile.iss
 
 #define MyAppName "Quick Camera Profile"
-#define MyAppVersion "1.0.1"
-#define MyAppPublisher "Roman Alurkoff"
+#define MyAppVersion "1.0.2"
+#define MyAppCreator "Roman Alurkoff"
+#define MyAppPublisher "TactileBridge - Photography Software Solutions and Integration"
 #define MyAppExeName "QuickProfile.exe"
 #define MyAppURL "https://github.com/OneSlips/quick-camera-profile"
-#define MyAppSourceURL "https://github.com/OneSlips/quick-camera-profile/archive/refs/tags/v1.0.1.zip"
+#define MyAppCompanyURL "https://tactilebridge.com"
+#define MyAppSourceURL "https://github.com/OneSlips/quick-camera-profile/archive/refs/tags/v1.0.2.zip"
 
 [Setup]
 AppId={{9AA42A42-27C7-47EA-B708-80A5E9DA7A22}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-AppPublisherURL={#MyAppURL}
+AppPublisherURL={#MyAppCompanyURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\\{#MyAppName}
@@ -54,8 +56,12 @@ begin
   begin
     MsgBox(
       'This software includes GPL-3.0 licensed components.' + #13#10 +
+      'Created by {#MyAppCreator}' + #13#10 +
+      'Distributed by {#MyAppPublisher}' + #13#10 +
       'Source code for this release: {#MyAppSourceURL}' + #13#10 +
       'Project repository: {#MyAppURL}',
       mbInformation, MB_OK);
   end;
 end;
+
+
