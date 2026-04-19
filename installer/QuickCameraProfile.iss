@@ -5,8 +5,8 @@
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Roman Alurkoff"
 #define MyAppExeName "QuickProfile.exe"
-#define MyAppURL "https://github.com/<your-account>/quick-camera-profile"
-#define MyAppSourceURL "https://github.com/<your-account>/quick-camera-profile/archive/refs/tags/v1.0.0.zip"
+#define MyAppURL "https://github.com/OneSlips/quick-camera-profile"
+#define MyAppSourceURL "https://github.com/OneSlips/quick-camera-profile/archive/refs/tags/v1.0.0.zip"
 
 [Setup]
 AppId={{9AA42A42-27C7-47EA-B708-80A5E9DA7A22}

@@ -12,9 +12,9 @@ Create one product in Lemon Squeezy:
 This software includes components licensed under GNU GPL v3.0.
 A copy of the license is included in the installer.
 Corresponding source code for this exact release is available at:
-https://github.com/<your-account>/quick-camera-profile/archive/refs/tags/vX.Y.Z.zip
+https://github.com/OneSlips/quick-camera-profile/archive/refs/tags/vX.Y.Z.zip
 Project repository:
-https://github.com/<your-account>/quick-camera-profile
+https://github.com/OneSlips/quick-camera-profile
 
 ## Release Workflow
 

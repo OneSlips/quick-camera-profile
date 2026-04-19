@@ -15,8 +15,8 @@ When distributing binaries, you must provide:
 
 ## Source Code Links (Set Before Release)
 
-- Project repository: `https://github.com/<your-account>/quick-camera-profile`
-- Exact release source archive: `https://github.com/<your-account>/quick-camera-profile/archive/refs/tags/vX.Y.Z.zip`
+- Project repository: https://github.com/OneSlips/quick-camera-profile
+- Exact release source archive: https://github.com/OneSlips/quick-camera-profile/archive/refs/tags/vX.Y.Z.zip
 
 ## Build
 

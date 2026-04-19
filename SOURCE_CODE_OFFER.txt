@@ -3,10 +3,10 @@ SOURCE CODE NOTICE - QUICK CAMERA PROFILE (QCP)
 This product includes software licensed under GNU GPL v3.0.
 
 You can obtain the complete corresponding source code for this exact release at:
-https://github.com/<your-account>/quick-camera-profile/archive/refs/tags/vX.Y.Z.zip
+https://github.com/OneSlips/quick-camera-profile/archive/refs/tags/vX.Y.Z.zip
 
 Project repository:
-https://github.com/<your-account>/quick-camera-profile
+https://github.com/OneSlips/quick-camera-profile
 
 If you distribute this binary, you must preserve this notice and provide
 corresponding source code access for recipients under GPLv3 terms.
