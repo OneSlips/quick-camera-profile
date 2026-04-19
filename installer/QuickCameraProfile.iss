@@ -18,8 +18,8 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\\{#MyAppName}
 DefaultGroupName={#MyAppName}
-LicenseFile=LICENSE
-OutputDir=release
+LicenseFile=..\LICENSE
+OutputDir=..\release
 OutputBaseFilename=QuickCameraProfile-Setup-v{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
@@ -33,10 +33,10 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "Create a desktop icon"; GroupDescription: "Additional icons:"; Flags: unchecked
 
 [Files]
-Source: "dist\\QuickProfile\\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
-Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion
-Source: "THIRD_PARTY_NOTICES.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "SOURCE_CODE_OFFER.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\\dist\\QuickProfile\\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
+Source: "..\\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\\THIRD_PARTY_NOTICES.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\\SOURCE_CODE_OFFER.txt"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\\{#MyAppName}"; Filename: "{app}\\{#MyAppExeName}"
