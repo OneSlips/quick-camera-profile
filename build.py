@@ -75,6 +75,7 @@ def main():
         "--clean",
         "--name", "QuickProfile",
         "--windowed",
+        "--icon", str(project_root / "assets" / "icon.ico"),
         "--onefile" if not args.dir else "--onedir",
         "--add-data", f"{dcamprof}{sep}bin",
         "--add-data", f"{scanin}{sep}argyll",

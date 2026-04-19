@@ -25,6 +25,8 @@ Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 ArchitecturesInstallIn64BitMode=x64compatible
+SetupIconFile=..\assets\icon.ico
+UninstallDisplayIcon={app}\QuickProfile.exe
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
