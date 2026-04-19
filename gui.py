@@ -10,6 +10,7 @@ from tkinter import filedialog, messagebox
 
 import customtkinter as ctk
 from PIL import Image, ImageTk
+from licensing import LemonLicenseManager
 
 from engine import (
     CHARTS,
@@ -64,6 +65,9 @@ class QuickProfileApp(ctk.CTk):
         self._chart_box: list | None = None        # 4 corners in full-res coords
         self._chart_box_preview: list | None = None  # 4 corners in preview coords
         self._chart_overlay_ids: list[int] = []    # canvas item ids
+        self._licensed = False
+        self._license_message = "License required"
+        self._license_manager = LemonLicenseManager()
 
         # ── engine ───────────────────────────────────────────────────
         self.engine: ProfileEngine | None = None
@@ -71,6 +75,7 @@ class QuickProfileApp(ctk.CTk):
 
         # ── UI ───────────────────────────────────────────────────────
         self._build_ui()
+        self._init_license_flow()
 
         # close handler
         self.protocol("WM_DELETE_WINDOW", self._on_close)
@@ -105,6 +110,117 @@ class QuickProfileApp(ctk.CTk):
         self.log_text.configure(state="disabled")
         self.log_text.see("end")
 
+    def _init_license_flow(self):
+        """Validate existing activation and lock app until licensed."""
+        status = self._license_manager.validate()
+        self._licensed = status.licensed
+        self._license_message = status.message
+        self._update_license_ui()
+        if not self._licensed:
+            self.after(250, self._show_license_dialog)
+
+    def _update_license_ui(self):
+        if self._licensed:
+            msg = "License: active"
+            key = self._license_manager.current_key()
+            if key:
+                suffix = key[-6:] if len(key) > 6 else key
+                msg = f"License: active (…{suffix})"
+            self.license_status_label.configure(text=msg, text_color="#2FA572")
+            if self.engine is not None:
+                self.browse_btn.configure(state="normal")
+        else:
+            self.license_status_label.configure(text="License: required", text_color="#FFB347")
+            self.browse_btn.configure(state="disabled")
+            self.create_btn.configure(state="disabled")
+            self.detect_btn.configure(state="disabled")
+
+    def _show_license_dialog(self):
+        """Modal license dialog (no-trial policy)."""
+        win = ctk.CTkToplevel(self)
+        win.title("License Activation")
+        win.geometry("560x320")
+        win.resizable(False, False)
+        win.grab_set()
+
+        ctk.CTkLabel(
+            win,
+            text="A valid Lemon Squeezy license is required to use Quick Camera Profile.",
+            wraplength=520,
+            justify="left",
+            anchor="w",
+        ).pack(fill="x", padx=20, pady=(20, 8))
+
+        key_var = ctk.StringVar(value=self._license_manager.current_key())
+        key_entry = ctk.CTkEntry(win, textvariable=key_var, placeholder_text="Enter license key")
+        key_entry.pack(fill="x", padx=20, pady=(4, 8))
+
+        status_var = ctk.StringVar(value=self._license_message)
+        status_lbl = ctk.CTkLabel(win, textvariable=status_var, text_color="#A6C8FF", anchor="w")
+        status_lbl.pack(fill="x", padx=20, pady=(0, 8))
+
+        btn_row = ctk.CTkFrame(win, fg_color="transparent")
+        btn_row.pack(fill="x", padx=20, pady=8)
+
+        def set_busy(on: bool):
+            state = "disabled" if on else "normal"
+            activate_btn.configure(state=state)
+            validate_btn.configure(state=state)
+            deactivate_btn.configure(state=state)
+            close_btn.configure(state=state)
+
+        def run_bg(work_fn):
+            set_busy(True)
+
+            def _worker():
+                status = work_fn()
+
+                def _done():
+                    self._licensed = status.licensed
+                    self._license_message = status.message
+                    status_var.set(status.message)
+                    status_lbl.configure(text_color="#2FA572" if status.licensed else "#FFB347")
+                    self._update_license_ui()
+                    if self._licensed:
+                        messagebox.showinfo("License", "Activation successful.")
+                        win.destroy()
+                    else:
+                        set_busy(False)
+
+                self.after(0, _done)
+
+            threading.Thread(target=_worker, daemon=True).start()
+
+        def do_activate():
+            run_bg(lambda: self._license_manager.activate(key_var.get().strip()))
+
+        def do_validate():
+            run_bg(self._license_manager.validate)
+
+        def do_deactivate():
+            run_bg(self._license_manager.deactivate)
+
+        activate_btn = ctk.CTkButton(btn_row, text="Activate", command=do_activate, fg_color="#2FA572")
+        activate_btn.pack(side="left")
+        validate_btn = ctk.CTkButton(btn_row, text="Validate", command=do_validate)
+        validate_btn.pack(side="left", padx=(8, 0))
+        deactivate_btn = ctk.CTkButton(btn_row, text="Deactivate", command=do_deactivate, fg_color="#A14A4A")
+        deactivate_btn.pack(side="left", padx=(8, 0))
+
+        close_btn = ctk.CTkButton(btn_row, text="Close", command=win.destroy)
+        close_btn.pack(side="right")
+
+        ctk.CTkLabel(
+            win,
+            text=(
+                "If activation fails, verify internet access and your Lemon Squeezy key.\n"
+                "No trial mode is enabled in this build."
+            ),
+            text_color="#9099AA",
+            justify="left",
+            anchor="w",
+        ).pack(fill="x", padx=20, pady=(8, 0))
+
     # ── build UI ─────────────────────────────────────────────────────
 
     def _build_ui(self):
@@ -123,9 +239,21 @@ class QuickProfileApp(ctk.CTk):
         )
         self.file_entry.pack(side="left", fill="x", expand=True, padx=5)
 
-        ctk.CTkButton(
+        self.browse_btn = ctk.CTkButton(
             file_frame, text="Browse", width=80, command=self._browse
-        ).pack(side="left", padx=(5, 10))
+        )
+        self.browse_btn.pack(side="left", padx=(5, 10))
+
+        self.license_btn = ctk.CTkButton(
+            file_frame, text="License", width=90,
+            command=self._show_license_dialog,
+        )
+        self.license_btn.pack(side="right", padx=(5, 10))
+
+        self.license_status_label = ctk.CTkLabel(
+            file_frame, text="License: required", width=260, anchor="e"
+        )
+        self.license_status_label.pack(side="right", padx=(5, 5))
 
         # ── camera info ──────────────────────────────────────────────
         cam_frame = ctk.CTkFrame(self)
@@ -307,6 +435,9 @@ class QuickProfileApp(ctk.CTk):
     # ── file selection ───────────────────────────────────────────────
 
     def _browse(self):
+        if not self._licensed:
+            self._show_license_dialog()
+            return
         path = filedialog.askopenfilename(
             title="Select Camera RAW File",
             filetypes=RAW_FILTER_PAIRS,
@@ -315,6 +446,9 @@ class QuickProfileApp(ctk.CTk):
             self._load_file(path)
 
     def _load_file(self, path: str):
+        if not self._licensed:
+            self._show_license_dialog()
+            return
         if not self.engine:
             messagebox.showerror(
                 "Tools missing",
@@ -376,8 +510,8 @@ class QuickProfileApp(ctk.CTk):
         pil_img = Image.fromarray(preview_rgb)
         self._display_preview(pil_img, info["width"], info["height"])
 
-        self.create_btn.configure(state="normal")
-        self.detect_btn.configure(state="normal")
+        self.create_btn.configure(state="normal" if self._licensed else "disabled")
+        self.detect_btn.configure(state="normal" if self._licensed else "disabled")
         self.crop_hint.configure(
             text=(
                 "Click Detect Chart. Wheel=zoom, middle-drag=pan, drag green pins to refine."
@@ -841,6 +975,9 @@ class QuickProfileApp(ctk.CTk):
     # ── profile creation ─────────────────────────────────────────────
 
     def _create_profile(self):
+        if not self._licensed:
+            self._show_license_dialog()
+            return
         if not self.raw_path or not self.engine or self._processing:
             return
 
