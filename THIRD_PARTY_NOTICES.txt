@@ -1,0 +1,26 @@
+Quick Camera Profile (QCP) - Third Party Notices
+
+This product includes open-source software.
+
+1) DCamProf
+- Copyright: Anders Torger and contributors
+- License: GPL-3.0
+- Upstream: https://github.com/Beep6581/dcamprof
+
+2) Argyll CMS (scanin and chart references)
+- Copyright: Graeme W. Gill
+- License: AGPLv3 / project terms
+- Upstream: https://argyllcms.com
+
+3) Python dependencies (see requirements.txt)
+- customtkinter
+- Pillow
+- rawpy
+- tifffile
+- numpy
+- exifread
+- pyexiv2
+- opencv-contrib-python
+
+Each dependency remains under its own license.
+Refer to package metadata and upstream repositories for details.

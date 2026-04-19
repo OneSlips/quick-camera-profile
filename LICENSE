@@ -1,0 +1,19 @@
+                    GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+
+ Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+DCamProf UI is a GUI application built around DCamProf, a free and open-source
+command line tool for making camera profiles by Anders Torger.
+
+The DCamProf engine source code (in engine/) is Copyright (c) Anders Torger
+and contributors, licensed under GPL-3.0.
+
+The GUI wrapper code (in src/, scripts/, main.py) is Copyright (c) 2026
+DCamProf UI Contributors, also licensed under GPL-3.0.
+
+This combined work is distributed under the terms of the GNU General Public
+License version 3. See https://www.gnu.org/licenses/gpl-3.0.html for the
+full license text.
